@@ -7,7 +7,7 @@
     java -jar log-processor.jar -f logfile.csv -d 2018-12-09
     ```
 
-#Project structure
+# Project structure
     - Main Class : LogProcessorMain - Responsible for wiring loader, converter, processor and service.
     - Converter : responsible to convert raw message to specific message
     - loader : responsible to load file and post message to queue
