@@ -17,20 +17,32 @@ import java.time.LocalDateTime;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Driver Class,
+ * Initializes queue : It is used to have clear separation of message and processing of message,
+ * it can be used to further enhance the performance. To make loading and processing non-blocking
+ *
+ * Loader Service load file and push logs to queue.
+ * Message Processor : process takes message from queue and pass to messageService
+ *
+ * Message Service: Has the business logic to get active cookie
+ */
 public class LogProcessorMain {
     private static final Logger LOG = LoggerFactory.getLogger(LogProcessorMain.class);
 
     public static void main(String[] args) throws IOException {
         LOG.info("App starts...");
         if (checkArguments(args)) {
-            LOG.info("FileName : {}, date: {} ", args[1], args[3]);
+            String fileName = args[1];
+            LocalDate localDate = LocalDate.parse(args[3]);
+            LOG.info("FileName : {}, date: {} ", fileName, localDate);
             final BlockingQueue<Message<LocalDateTime, LogMessage>> blockingQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
-            MessageLoader loaderService = new MessageLoaderService(args[1], blockingQueue);
+            MessageLoader loaderService = new MessageLoaderService(fileName, blockingQueue);
             loaderService.loadMessage();
             MessageService messageService = new MessageServiceImpl();
             MessageProcessor<LocalDate, String> messageProcessor = new LogMessageProcessor(blockingQueue, messageService);
             messageProcessor.process();
-            LOG.info("Active cookies are :: {}", messageService.getActiveCookies(LocalDate.parse(args[3])));
+            LOG.info("Active cookies are :: {}", messageService.getActiveCookies(localDate));
         }
     }
 
