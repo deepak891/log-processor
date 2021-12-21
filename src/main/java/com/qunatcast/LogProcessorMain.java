@@ -25,16 +25,12 @@ public class LogProcessorMain {
         if (checkArguments(args)) {
             LOG.info("FileName : {}, date: {} ", args[1], args[3]);
             final BlockingQueue<Message<LocalDateTime, LogMessage>> blockingQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
-
             MessageLoader loaderService = new MessageLoaderService(args[1], blockingQueue);
             loaderService.loadMessage();
-
             MessageService messageService = new MessageServiceImpl();
             MessageProcessor<LocalDate, String> messageProcessor = new LogMessageProcessor(blockingQueue, messageService);
             messageProcessor.process();
-
             LOG.info("Active cookies are :: {}", messageService.getActiveCookies(LocalDate.parse(args[3])));
-
         }
     }
 

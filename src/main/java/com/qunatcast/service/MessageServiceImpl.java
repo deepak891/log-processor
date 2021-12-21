@@ -35,14 +35,12 @@ public class MessageServiceImpl implements MessageService<CookieMessage> {
         final List<String> logMessages = cookiesMap.get(key);
         if (Objects.isNull(cookiesMap.get(key)))
             return null;
-
         final Map<String, Long> cookiesMap = getCookieCountMap(logMessages);
         return findActiveCookies(cookiesMap, getMaxCount(cookiesMap));
     }
 
     List<String> findActiveCookies(final Map<String, Long> cookiesMap, final Long activeCookieCount) {
         List<String> activeCookies = new ArrayList<>();
-
         for (Map.Entry<String, Long> element : cookiesMap.entrySet()) {
             if (Objects.equals(element.getValue(), activeCookieCount)) {
                 activeCookies.add(element.getKey());
@@ -56,7 +54,6 @@ public class MessageServiceImpl implements MessageService<CookieMessage> {
                 .stream().max(comparingByValue())
                 .map(Map.Entry::getValue)
                 .orElse(1L);
-
     }
 
     Map<String, Long> getCookieCountMap(final List<String> logMessages) {
