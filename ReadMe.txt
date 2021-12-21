@@ -6,6 +6,7 @@
     ```
     java -jar log-processor.jar -f logfile.csv -d 2018-12-09
     ```
+    Note: logfile.csv should be present in <project_root>/log_processor_executable directory sample file placed in directory
 
 # Project structure
     - Main Class : LogProcessorMain - Responsible for wiring loader, converter, processor and service.
